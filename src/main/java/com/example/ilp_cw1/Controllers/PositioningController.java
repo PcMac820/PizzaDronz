@@ -169,7 +169,7 @@ public class PositioningController {
 
     public boolean isPointInPolygon(LngLat point, List<LngLat> polygon) {
         int n = polygon.size();
-        boolean inside = false;
+        boolean inside = false; //
 
         for (int i = 0, j = n - 1; i < n; j = i++) {
             LngLat pi = polygon.get(i);
