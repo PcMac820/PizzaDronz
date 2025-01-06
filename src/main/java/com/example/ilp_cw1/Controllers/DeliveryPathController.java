@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,28 +17,26 @@ import org.locationtech.jts.geom.LineString;
 import java.util.*;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @RestController
 public class DeliveryPathController {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeliveryPathController.class);
+    private final OrderController orderController;
 
-    @Autowired
-    private OrderController orderController;
+    private final RestaurantService restaurantService;
 
-    @Autowired
-    private RestaurantService restaurantService;
+    private final CentralAreaService centralAreaService;
 
-    @Autowired
-    private CentralAreaService centralAreaService;
+    private final NoFlyZoneService noFlyZoneService;
 
-    @Autowired
-    private NoFlyZoneService noFlyZoneService;
+    private final PositioningController positioningController;
 
-    @Autowired
-    private PositioningController positioningController;
+    public DeliveryPathController(OrderController orderController, RestaurantService restaurantService, CentralAreaService centralAreaService, NoFlyZoneService noFlyZoneService, PositioningController positioningController) {
+        this.orderController = orderController;
+        this.restaurantService = restaurantService;
+        this.centralAreaService = centralAreaService;
+        this.noFlyZoneService = noFlyZoneService;
+        this.positioningController = positioningController;
+    }
 
     @PostMapping("/calcDeliveryPath")
     public ResponseEntity<Object> calcDeliveryPath(@RequestBody Order order) {

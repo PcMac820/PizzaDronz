@@ -11,6 +11,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(JsonMappingException.class)
     public ResponseEntity<Object> handleJsonMappingException(JsonMappingException e) {
-        return new ResponseEntity<>("Invalid input - Make sure all coordinate values are valid numbers", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e + ": Invalid input - Make sure all coordinate values are valid numbers", HttpStatus.BAD_REQUEST);
     }
 }

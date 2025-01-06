@@ -1,8 +1,6 @@
 package com.example.ilp_cw1.Controllers;
 
 import com.example.ilp_cw1.DTO.*;
-import com.example.ilp_cw1.Services.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +10,6 @@ import java.util.Objects;
 
 @RestController
 public class PositioningController {
-
-    private final OrderController orderController;
-    private final RestaurantService restaurantService;
-
-    @Autowired
-    public PositioningController(OrderController orderController, RestaurantService restaurantService) {
-        this.orderController = orderController;
-        this.restaurantService = restaurantService;
-    }
 
     @GetMapping("/isAlive")
     public boolean isAlive(){
@@ -63,15 +52,8 @@ public class PositioningController {
             LngLat position1 = request.getPosition1();
             LngLat position2 = request.getPosition2();
 
-            if (position1 == null || position2 == null ||
-                    position1.getLng() == null || position1.getLat() == null ||
-                    position2.getLng() == null || position2.getLat() == null) {
-                return ResponseEntity.badRequest().body("Longitude and latitude must be provided for both positions.");
-            }
-
-            if (!isValidCoordinates(position1.getLng(), position1.getLat()) ||
-                    !isValidCoordinates(position2.getLng(), position2.getLat())) {
-                return ResponseEntity.badRequest().body("Invalid coordinates.");
+            if (!validatePositions(position1, position2)) {
+                return ResponseEntity.badRequest().body("Invalid Positions");
             }
 
             if (calculateDistance(position1, position2) < 0.00015){
@@ -228,6 +210,17 @@ public class PositioningController {
         double newLat = lat1 + latChange;
 
         return new LngLat(newLng, newLat);
+    }
+
+    private boolean validatePositions(LngLat position1, LngLat position2){
+        if (position1 == null || position2 == null ||
+                position1.getLng() == null || position1.getLat() == null ||
+                position2.getLng() == null || position2.getLat() == null) {
+            return false;
+        }
+
+        return isValidCoordinates(position1.getLng(), position1.getLat()) &&
+                isValidCoordinates(position2.getLng(), position2.getLat());
     }
 
     private boolean isValidCoordinates(double lng, double lat) {

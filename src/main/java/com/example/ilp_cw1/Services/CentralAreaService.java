@@ -1,8 +1,6 @@
 package com.example.ilp_cw1.Services;
 
-import com.example.ilp_cw1.DTO.LngLat;
 import com.example.ilp_cw1.DTO.NamedRegion;
-import com.example.ilp_cw1.DTO.Restaurant;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 @Service
 public class CentralAreaService {
@@ -26,7 +23,8 @@ public class CentralAreaService {
 
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(response.body(), new TypeReference<NamedRegion>() {});
+                return mapper.readValue(response.body(), new TypeReference<>() {
+                });
             }
             else {
                 System.err.println("Error: Unable to fetch data. Status code: " + response.statusCode());

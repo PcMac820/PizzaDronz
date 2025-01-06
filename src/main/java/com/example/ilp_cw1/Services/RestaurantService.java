@@ -26,7 +26,8 @@ public class RestaurantService {
 
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(response.body(), new TypeReference<List<Restaurant>>() {});
+                return mapper.readValue(response.body(), new TypeReference<>() {
+                });
             } else {
                 System.err.println("Error: Unable to fetch data. Status code: " + response.statusCode());
             }

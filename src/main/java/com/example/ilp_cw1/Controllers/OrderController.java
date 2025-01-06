@@ -11,16 +11,13 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class OrderController {
 
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
 
     @Autowired
     public OrderController(RestaurantService restaurantService) {
@@ -59,7 +56,7 @@ public class OrderController {
             Restaurant orderRestaurant = optionalRestaurant.get();
 
             List<DayOfWeek> openDays = orderRestaurant.getOpeningDays().stream()
-                    .map(DayOfWeek::valueOf).collect(Collectors.toList());
+                    .map(DayOfWeek::valueOf).toList();
             DayOfWeek orderDay = LocalDate.parse(order.getOrderDate()).getDayOfWeek();
 
             int orderTotal = order.getPriceTotalInPence();
