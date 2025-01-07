@@ -1,0 +1,25 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  script:
+    - mvn clean install
+  only:
+    - main
+
+test:
+  script:
+    - mvn test
+  artifacts:
+    paths:
+      - target/test-*.xml
+  only:
+    - main
+
+deploy:
+  script:
+    - echo "Deploying to production..."
+  only:
+    - main
