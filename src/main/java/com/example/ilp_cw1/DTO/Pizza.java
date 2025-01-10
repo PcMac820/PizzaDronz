@@ -21,12 +21,4 @@ public class Pizza {
         return priceInPence;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPriceInPence(int priceInPence) {
-        this.priceInPence = priceInPence;
-    }
-
 }

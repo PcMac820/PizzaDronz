@@ -11,6 +11,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,14 +44,15 @@ public class OrderController {
             if (orderPizzas.length == 0) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.EMPTY_ORDER);
-                return new ResponseEntity<>(thisOrderValidation, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(thisOrderValidation, HttpStatus.OK);
             }
 
-            String restaurantNo = orderPizzas[0].getName().substring(0, 2);
-
-            Optional<Restaurant> optionalRestaurant = restaurantService.fetchRestaurants().stream()
-                    .filter(restaurant -> restaurant.getMenu().get(0).getName().substring(0, 2)
-                            .equals(restaurantNo)).findFirst();
+            List<Restaurant> allRestaurants = restaurantService.fetchRestaurants();
+            Optional<Restaurant> optionalRestaurant = allRestaurants.stream()
+                    .filter(restaurant -> Arrays.stream(orderPizzas)
+                            .anyMatch(orderPizza -> restaurant.getMenu().stream()
+                                    .anyMatch(menuPizza -> menuPizza.getName().equals(orderPizza.getName()))))
+                    .findFirst();
             if (optionalRestaurant.isEmpty()) {
                 throw new IllegalArgumentException("No matching restaurant found for the order.");
             }
@@ -71,30 +74,46 @@ public class OrderController {
                 calculatedTotal += pizza.getPriceInPence();
 
                 // For Pizza Definition Checking
-                if (pizza.getName() == null || pizza.getName().isEmpty() || pizza.getPriceInPence() == 0){
+                boolean isPizzaNameInvalid = pizza.getName() == null || pizza.getName().isEmpty();
+                boolean isPizzaPriceInvalid = pizza.getPriceInPence() == 0;
+                boolean isPizzaNotInAnyMenu = allRestaurants.stream()
+                        .flatMap(restaurant -> restaurant.getMenu().stream())
+                        .noneMatch(menuPizza -> menuPizza.getName().equals(pizza.getName()));
+                if (isPizzaNameInvalid || isPizzaPriceInvalid || isPizzaNotInAnyMenu) {
                     pizzaUndefined = true;
                 }
 
                 // For checking same restaurant
-                if (!pizza.getName().substring(0, 2).equals(restaurantNo)) {
+                if (orderRestaurant.getMenu().stream().noneMatch(menuPizza -> menuPizza.getName().equals(pizza.getName()))) {
                     differentRestaurants = true;
                 }
-
                 // For checking pizza prices
-                if (pizza.getPriceInPence() < 0) {
+                int pizzaPrice = pizza.getPriceInPence();
+                if (pizzaPrice < 0) {
                     badPizzaPrice = true;
+                }
+                else {
+                    badPizzaPrice = orderRestaurant.getMenu().stream()
+                            .noneMatch(menuPizza -> menuPizza.getPriceInPence() == pizzaPrice);
                 }
             }
 
-            if (badPizzaPrice) {
+            // Pizza Definition Validation Check
+            if (pizzaUndefined) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
-                thisOrderValidation.setOrderValidationCode(OrderValidationCode.PRICE_FOR_PIZZA_INVALID);
+                thisOrderValidation.setOrderValidationCode(OrderValidationCode.PIZZA_NOT_DEFINED);
             }
 
             // Multiple Restaurants Validation Check
             else if (differentRestaurants){
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.PIZZA_FROM_MULTIPLE_RESTAURANTS);
+            }
+
+            // Pizza Price Validation Check
+            else if (badPizzaPrice) {
+                thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
+                thisOrderValidation.setOrderValidationCode(OrderValidationCode.PRICE_FOR_PIZZA_INVALID);
             }
 
             // Restaurant Opening Days Validation Check
@@ -107,12 +126,6 @@ public class OrderController {
             else if (orderPizzas.length > 4){
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.MAX_PIZZA_COUNT_EXCEEDED);
-            }
-
-            // Pizza Definition Validation Check
-            else if (pizzaUndefined) {
-                thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
-                thisOrderValidation.setOrderValidationCode(OrderValidationCode.PIZZA_NOT_DEFINED);
             }
 
             // Total is Correct Check
@@ -130,8 +143,9 @@ public class OrderController {
             // Expiry Date Validation Check
             else if (orderCardExpiryString == null ||
                     orderCardExpiryString.isEmpty() ||
-                    YearMonth.parse(orderCardExpiryString, formatter).isBefore(thisMonth) ||
-                    YearMonth.parse(orderCardExpiryString, formatter).equals(thisMonth)) {
+                    Integer.parseInt(orderCardExpiryString.substring(0,2)) > 12 ||
+                    Integer.parseInt(orderCardExpiryString.substring(0,2)) < 1 ||
+                    YearMonth.parse(orderCardExpiryString, formatter).isBefore(thisMonth)) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.EXPIRY_DATE_INVALID);
             }
@@ -148,12 +162,7 @@ public class OrderController {
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.NO_ERROR);
             }
 
-            if (thisOrderValidation.getOrderStatus().equals(OrderStatus.VALID)) {
-                return new ResponseEntity<>(thisOrderValidation, HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(thisOrderValidation, HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(thisOrderValidation, HttpStatus.OK);
         }
         catch (Exception e){
             System.out.println(e.getMessage());

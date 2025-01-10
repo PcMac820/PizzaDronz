@@ -214,7 +214,7 @@ public class DeliveryPathController {
     }
 
     public double calculateHeuristic(LngLat from, LngLat to) {
-        return Math.sqrt(Math.pow(from.getLng() - to.getLng(), 2) + Math.pow(from.getLat() - to.getLat(), 2));
+        return 2 * Math.sqrt(Math.pow(from.getLng() - to.getLng(), 2) + Math.pow(from.getLat() - to.getLat(), 2));
     }
 
     private boolean doLinesIntersect(NamedRegion noFlyZone, LngLat currentPosition, LngLat childPosition){
