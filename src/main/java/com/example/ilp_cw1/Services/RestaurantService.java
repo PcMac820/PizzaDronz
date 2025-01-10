@@ -14,15 +14,17 @@ import java.util.List;
 @Service
 public class RestaurantService {
 
+    private final HttpClient httpClient;
     private static final String RESTAURANTS_URL = "https://ilp-rest-2024.azurewebsites.net/restaurants";
+
+    public RestaurantService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public List<Restaurant> fetchRestaurants() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(RESTAURANTS_URL)).GET().build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();

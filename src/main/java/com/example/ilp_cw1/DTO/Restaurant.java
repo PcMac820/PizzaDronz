@@ -1,6 +1,7 @@
 package com.example.ilp_cw1.DTO;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Restaurant {
 
@@ -16,6 +17,22 @@ public class Restaurant {
         this.location = location;
         this.openingDays = openingDays;
         this.menu = menu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Restaurant that = (Restaurant) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(openingDays, that.openingDays) &&
+                Objects.equals(menu, that.menu);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, location, openingDays, menu);
     }
 
     public String getName() {

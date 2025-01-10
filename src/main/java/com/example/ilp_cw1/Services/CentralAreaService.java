@@ -13,24 +13,26 @@ import java.net.http.HttpResponse;
 @Service
 public class CentralAreaService {
 
+    private final HttpClient httpClient;
     private static final String CENTRAL_AREA_URL = "https://ilp-rest-2024.azurewebsites.net/centralArea";
+
+    public CentralAreaService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public NamedRegion fetchCentralArea() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(CENTRAL_AREA_URL)).GET().build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(response.body(), new TypeReference<>() {
-                });
+                return mapper.readValue(response.body(), new TypeReference<>() {});
             }
             else {
                 System.err.println("Error: Unable to fetch data. Status code: " + response.statusCode());
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

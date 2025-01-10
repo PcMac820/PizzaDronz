@@ -14,18 +14,21 @@ import java.util.List;
 @Service
 public class NoFlyZoneService {
 
+    private final HttpClient httpClient;
     private static final String NO_FLY_ZONE_URL = "https://ilp-rest-2024.azurewebsites.net/noFlyZones";
+
+    public NoFlyZoneService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public List<NamedRegion> fetchNoFlyZones() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(NO_FLY_ZONE_URL)).GET().build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(response.body(), new TypeReference<>() {
-                });
+                return mapper.readValue(response.body(), new TypeReference<>() {});
             }
             else {
                 System.err.println("Error: Unable to fetch data. Status code: " + response.statusCode());

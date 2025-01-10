@@ -1,5 +1,7 @@
 package com.example.ilp_cw1.DTO;
 
+import java.util.Objects;
+
 public class Pizza {
 
     private String name;
@@ -11,6 +13,19 @@ public class Pizza {
     public Pizza(String name, int priceInPence) {
         this.name = name;
         this.priceInPence = priceInPence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pizza pizza = (Pizza) o;
+        return priceInPence == pizza.priceInPence && Objects.equals(name, pizza.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, priceInPence);
     }
 
     public String getName() {
