@@ -11,7 +11,8 @@ public class Order {
     private Pizza[] pizzasInOrder;
     private CreditCardInformation creditCardInformation;
 
-    public Order(String orderNo, String orderDate, int priceTotalInPence, Pizza[] pizzasInOrder, CreditCardInformation creditCardInformation) {
+    public Order(String orderNo, String orderDate, int priceTotalInPence, Pizza[] pizzasInOrder,
+                 CreditCardInformation creditCardInformation) {
         this.orderNo = orderNo;
         this.orderDate = orderDate;
         this.priceTotalInPence = priceTotalInPence;

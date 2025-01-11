@@ -1,22 +1,16 @@
 package Services;
 
 import com.example.ilp_cw1.DTO.LngLat;
-import com.example.ilp_cw1.DTO.NamedRegion;
 import com.example.ilp_cw1.DTO.Pizza;
 import com.example.ilp_cw1.DTO.Restaurant;
-import com.example.ilp_cw1.Services.CentralAreaService;
 import com.example.ilp_cw1.Services.RestaurantService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

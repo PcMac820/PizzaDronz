@@ -5,6 +5,11 @@ public class NamedRegionAndPoint {
     private LngLat position;
     private NamedRegion namedRegion;
 
+    public NamedRegionAndPoint(LngLat position, NamedRegion namedRegion) {
+        this.position = position;
+        this.namedRegion = namedRegion;
+    }
+
     public LngLat getPosition() {
         return position;
     }

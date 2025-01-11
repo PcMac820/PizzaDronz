@@ -11,7 +11,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +53,7 @@ public class OrderController {
                                     .anyMatch(menuPizza -> menuPizza.getName().equals(orderPizza.getName()))))
                     .findFirst();
             if (optionalRestaurant.isEmpty()) {
-                throw new IllegalArgumentException("No matching restaurant found for the order.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
             Restaurant orderRestaurant = optionalRestaurant.get();
 
@@ -135,7 +134,7 @@ public class OrderController {
             }
 
             // CVV Validation Check
-            else if (orderCVV == null || orderCVV.length() != 3) {
+            else if (orderCVV == null || orderCVV.length() != 3 || !orderCVV.chars().allMatch(Character::isDigit)) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.CVV_INVALID);
             }
@@ -151,7 +150,8 @@ public class OrderController {
             }
 
             // Card Number Validation Check
-            else if (orderCardNo == null || orderCardNo.length() != 16) {
+            else if (orderCardNo == null || orderCardNo.length() != 16 ||
+                    !orderCardNo.chars().allMatch(Character::isDigit)) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.CARD_NUMBER_INVALID);
             }

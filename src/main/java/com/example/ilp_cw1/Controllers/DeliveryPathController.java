@@ -41,21 +41,25 @@ public class DeliveryPathController {
     @PostMapping("/calcDeliveryPath")
     public ResponseEntity<Object> calcDeliveryPath(@RequestBody Order order) {
         try {
-            if (!Objects.requireNonNull(orderController.validateOrder(order).getBody()).getOrderStatus()
-                    .equals(OrderStatus.VALID)) {
+            if (!Objects.requireNonNull(orderController.validateOrder(order).getBody())
+                    .getOrderStatus().equals(OrderStatus.VALID)) {
                 return new ResponseEntity<>("Invalid Order: Validate Order First", HttpStatus.BAD_REQUEST);
             }
 
             List<LngLat> startAndGoal = setupForAStarSearch(order);
-            List<LngLat> path = findPathUsingAStar(startAndGoal.get(0), startAndGoal.get(1));
+            if (startAndGoal == null || startAndGoal.size() < 2) {
+                return new ResponseEntity<>("Invalid start or goal for pathfinding", HttpStatus.BAD_REQUEST);
+            }
 
-            if (path == null) {
+            List<LngLat> path = findPathUsingAStar(startAndGoal.get(0), startAndGoal.get(1));
+            if (path == null || path.isEmpty()) {
                 return new ResponseEntity<>("Path can't be found", HttpStatus.BAD_REQUEST);
             }
 
             return ResponseEntity.ok(path);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            // Log the exception for better debugging
+            return new ResponseEntity<>("Unexpected error occurred: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -65,7 +69,7 @@ public class DeliveryPathController {
             List<LngLat> startAndGoal = setupForAStarSearch(order);
             List<LngLat> path = findPathUsingAStar(startAndGoal.get(0), startAndGoal.get(1));
 
-            if (path == null) {
+            if (path == null || path.isEmpty()) {
                 return new ResponseEntity<>("No path found", HttpStatus.BAD_REQUEST);
             }
 
@@ -97,7 +101,7 @@ public class DeliveryPathController {
         return new ArrayList<>(Arrays.asList(startingPos, goalPos));
     }
 
-    private List<LngLat> findPathUsingAStar(LngLat startPosition, LngLat goalPosition) {
+    public List<LngLat> findPathUsingAStar(LngLat startPosition, LngLat goalPosition) {
         PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparingDouble(Node::getFCost));
         List<Node> closedList = new ArrayList<>();
 
@@ -217,7 +221,7 @@ public class DeliveryPathController {
         return 2 * Math.sqrt(Math.pow(from.getLng() - to.getLng(), 2) + Math.pow(from.getLat() - to.getLat(), 2));
     }
 
-    private boolean doLinesIntersect(NamedRegion noFlyZone, LngLat currentPosition, LngLat childPosition){
+    public boolean doLinesIntersect(NamedRegion noFlyZone, LngLat currentPosition, LngLat childPosition){
         List<LngLat> noFlyZoneVertices = noFlyZone.getVertices();
         int n = noFlyZoneVertices.size();
         Coordinate[] recentLineCoords = {

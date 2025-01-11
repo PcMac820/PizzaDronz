@@ -6,6 +6,14 @@ public class CreditCardInformation {
     private String creditCardExpiry;
     private String cvv;
 
+    public CreditCardInformation() {}
+
+    public CreditCardInformation(String creditCardNumber, String creditCardExpiry, String cvv) {
+        this.creditCardNumber = creditCardNumber;
+        this.creditCardExpiry = creditCardExpiry;
+        this.cvv = cvv;
+    }
+
     public String getCreditCardNumber() {
         return creditCardNumber;
     }

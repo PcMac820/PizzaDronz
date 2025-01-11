@@ -56,7 +56,9 @@ public class PositioningController {
                 return ResponseEntity.badRequest().body("Invalid Positions");
             }
 
-            if (calculateDistance(position1, position2) < 0.00015){
+            double result = calculateDistance(position1, position2);
+
+            if (result < 0.00015){
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }
             else {
@@ -64,7 +66,7 @@ public class PositioningController {
             }
         }
         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.badRequest().body("Unexpected Error");
         }
     }
 
@@ -75,7 +77,7 @@ public class PositioningController {
             double angle = request.getAngle();
 
             if (start == null || start.getLng() == null || start.getLat() == null
-                    || angle < 0 || angle > 360 || !(angle % 22.5 == 0) ) {
+                    || angle < 0 || angle > 360 || !(angle % 22.5 == 0)) {
                 return ResponseEntity.badRequest().body("Start position and angle must be valid.");
             }
 
@@ -126,12 +128,12 @@ public class PositioningController {
                 }
             }
 
-            if (Objects.equals(polygon.get(0).getLat(), polygon.get(polygon.size() - 1).getLat()) &&
-                    Objects.equals(polygon.get(0).getLng(), polygon.get(polygon.size() - 1).getLng())) {
+            if (!Objects.equals(polygon.get(0).getLat(), polygon.get(polygon.size() - 1).getLat()) ||
+                    !Objects.equals(polygon.get(0).getLng(), polygon.get(polygon.size() - 1).getLng())) {
                 return ResponseEntity.badRequest().body(false);
             }
 
-            for (int i = 0; i < polygon.size(); i++) {
+            for (int i = 0; i < polygon.size() - 2; i++) {
                 if (isCollinear(polygon.get(i).getLat(), polygon.get(i).getLng(), polygon.get(i+1).getLat(),
                         polygon.get(i+1).getLng(), polygon.get(i+2).getLat(), polygon.get(i+2).getLng())){
                     return ResponseEntity.badRequest().body(false);
@@ -146,7 +148,7 @@ public class PositioningController {
     }
 
     private boolean isCollinear(Double lat1, Double lng1, Double lat2, Double lng2, Double lat3, Double lng3) {
-        return !(Math.abs((lat2 - lat1) * (lng3 - lng2) - (lat3 - lat2) * (lng2 - lng1)) > 1e-10);
+        return !(Math.abs((lat2 - lat1) * (lng3 - lng2) - (lat3 - lat2) * (lng2 - lng1)) > 1e-6);
     }
 
     public boolean isPointInPolygon(LngLat point, List<LngLat> polygon) {
