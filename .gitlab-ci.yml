@@ -4,17 +4,19 @@ stages:
   - deploy
 
 build:
+  image: maven:3.8.6-openjdk-11
   script:
     - mvn clean install
   only:
     - main
 
 test:
+  image: maven:3.8.6-openjdk-11
   script:
     - mvn test
   artifacts:
     paths:
-      - target/test-*.xml
+      - target/surefire-reports/*.xml
   only:
     - main
 
