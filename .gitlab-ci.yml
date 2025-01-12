@@ -4,14 +4,14 @@ stages:
   - deploy
 
 build:
-  image: maven:3.8.6-openjdk-11
+  image: maven:3.8.6-openjdk-17
   script:
     - mvn clean install
   only:
     - main
 
 test:
-  image: maven:3.8.6-openjdk-11
+  image: maven:3.8.6-openjdk-17
   script:
     - mvn test
   artifacts:
