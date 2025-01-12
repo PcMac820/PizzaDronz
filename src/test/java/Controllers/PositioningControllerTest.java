@@ -25,6 +25,7 @@ public class PositioningControllerTest {
         positioningController = new PositioningController();
     }
 
+    // TEst
     @Test
     public void testGetDistanceTo_ValidCoordinates() {
         LngLat position1 = new LngLat(0.0, 0.0);
