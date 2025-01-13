@@ -1,8 +1,5 @@
 package com.example.ilp_cw1.DTO;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +14,7 @@ public class NamedRegion {
         this.vertices = vertices;
     }
 
+    //override for equals based on values rather than object
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -40,9 +38,5 @@ public class NamedRegion {
 
     public List<LngLat> getVertices() {
         return vertices;
-    }
-
-    public void setVertices(List<LngLat> vertices) {
-        this.vertices = vertices;
     }
 }

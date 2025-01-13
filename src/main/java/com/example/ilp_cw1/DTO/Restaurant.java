@@ -19,6 +19,7 @@ public class Restaurant {
         this.menu = menu;
     }
 
+    //override for equals based on values rather than object
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,23 +48,11 @@ public class Restaurant {
         return location;
     }
 
-    public void setLocation(LngLat location) {
-        this.location = location;
-    }
-
     public List<String> getOpeningDays() {
         return openingDays;
     }
 
-    public void setOpeningDays(List<String> openingDays) {
-        this.openingDays = openingDays;
-    }
-
     public List<Pizza> getMenu() {
         return menu;
-    }
-
-    public void setMenu(List<Pizza> menu) {
-        this.menu = menu;
     }
 }

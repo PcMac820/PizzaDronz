@@ -15,6 +15,7 @@ public class Pizza {
         this.priceInPence = priceInPence;
     }
 
+    //override for equals based on values rather than object
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

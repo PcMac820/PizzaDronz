@@ -1,7 +1,5 @@
 package com.example.ilp_cw1.DTO;
 
-import org.springframework.http.HttpStatus;
-
 public class OrderValidationResult {
 
     private OrderStatus orderStatus;

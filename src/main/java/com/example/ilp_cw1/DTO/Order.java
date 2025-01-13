@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
-    private String orderNo;
-    private String orderDate;
-    private int priceTotalInPence;
-    private Pizza[] pizzasInOrder;
-    private CreditCardInformation creditCardInformation;
+    String orderNo;
+    String orderDate;
+    int priceTotalInPence;
+    Pizza[] pizzasInOrder;
+    CreditCardInformation creditCardInformation;
 
     public Order(String orderNo, String orderDate, int priceTotalInPence, Pizza[] pizzasInOrder,
                  CreditCardInformation creditCardInformation) {
@@ -20,28 +20,12 @@ public class Order {
         this.creditCardInformation = creditCardInformation;
     }
 
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public int getPriceTotalInPence() {
         return priceTotalInPence;
-    }
-
-    public void setPriceTotalInPence(int priceTotalInPence) {
-        this.priceTotalInPence = priceTotalInPence;
     }
 
     public Pizza[] getPizzasInOrder() {
@@ -55,17 +39,4 @@ public class Order {
     public CreditCardInformation getCreditCardInformation() {
         return creditCardInformation;
     }
-
-    public void setCreditCardInformation(CreditCardInformation creditCardInformation) {
-        this.creditCardInformation = creditCardInformation;
-    }
-
-    public int calculateTotalPrice() {
-        int total = 0;
-        for (Pizza pizza : pizzasInOrder) {
-            total += pizza.getPriceInPence();
-        }
-        return total;
-    }
-
 }

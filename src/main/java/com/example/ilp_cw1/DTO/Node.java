@@ -53,6 +53,7 @@ public class Node implements Comparable<Node> {
         return Double.compare(this.fCost, other.fCost);
     }
 
+    //override for equals based on values rather than object
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -64,9 +65,5 @@ public class Node implements Comparable<Node> {
     @Override
     public int hashCode() {
         return Objects.hash(position);
-    }
-
-    public void setParent(Node parent) {
-        this.parent = parent;
     }
 }

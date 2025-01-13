@@ -15,6 +15,7 @@ public class LngLat {
         this.lat = lat;
     }
 
+    //override for equals based on values rather than object
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

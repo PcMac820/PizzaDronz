@@ -28,49 +28,55 @@ public class OrderController {
     @PostMapping("/validateOrder")
     public ResponseEntity<OrderValidationResult> validateOrder(@RequestBody Order order) {
         try{
+            //setup order validation as undefined
             OrderValidationResult thisOrderValidation = new OrderValidationResult(OrderStatus.UNDEFINED, OrderValidationCode.UNDEFINED);
 
+            //setup credit card information
             String orderCardNo = order.getCreditCardInformation().getCreditCardNumber();
             String orderCVV = order.getCreditCardInformation().getCvv();
-
             String orderCardExpiryString = order.getCreditCardInformation().getCreditCardExpiry();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
+
+            //setup current date
             YearMonth thisMonth = YearMonth.from(LocalDate.now());
 
+            //retrieve all pizzas in the order
             Pizza[] orderPizzas = order.getPizzasInOrder();
 
-            // Check if empty
+            //Validation Check if empty
             if (orderPizzas.length == 0) {
                 thisOrderValidation.setOrderStatus(OrderStatus.INVALID);
                 thisOrderValidation.setOrderValidationCode(OrderValidationCode.EMPTY_ORDER);
                 return new ResponseEntity<>(thisOrderValidation, HttpStatus.OK);
             }
 
+            //searches through the retrieved restaurants to find which restaurant contains a pizza from the order
             List<Restaurant> allRestaurants = restaurantService.fetchRestaurants();
             Optional<Restaurant> optionalRestaurant = allRestaurants.stream()
                     .filter(restaurant -> Arrays.stream(orderPizzas)
                             .anyMatch(orderPizza -> restaurant.getMenu().stream()
-                                    .anyMatch(menuPizza -> menuPizza.getName().equals(orderPizza.getName()))))
-                    .findFirst();
+                                    .anyMatch(menuPizza -> menuPizza.getName()
+                                            .equals(orderPizza.getName())))).findFirst();
             if (optionalRestaurant.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
             Restaurant orderRestaurant = optionalRestaurant.get();
 
-            List<DayOfWeek> openDays = orderRestaurant.getOpeningDays().stream()
-                    .map(DayOfWeek::valueOf).toList();
+            //get restaurant's opening days and current day of the week
+            List<DayOfWeek> openDays = orderRestaurant.getOpeningDays().stream().map(DayOfWeek::valueOf).toList();
             DayOfWeek orderDay = LocalDate.parse(order.getOrderDate()).getDayOfWeek();
 
             int orderTotal = order.getPriceTotalInPence();
             int calculatedTotal = 100; // 100 for order fee
+
+            //boolean checks to keep track of different states
             boolean pizzaUndefined = false;
-
             boolean differentRestaurants = false;
-
             boolean badPizzaPrice = false;
 
+            //loops through every pizza in the order to check validity
             for (Pizza pizza : orderPizzas){
-                calculatedTotal += pizza.getPriceInPence();
+                calculatedTotal += pizza.getPriceInPence(); //sums up the price of each pizza in the order
 
                 // For Pizza Definition Checking
                 boolean isPizzaNameInvalid = pizza.getName() == null || pizza.getName().isEmpty();
@@ -86,12 +92,12 @@ public class OrderController {
                 if (orderRestaurant.getMenu().stream().noneMatch(menuPizza -> menuPizza.getName().equals(pizza.getName()))) {
                     differentRestaurants = true;
                 }
+
                 // For checking pizza prices
                 int pizzaPrice = pizza.getPriceInPence();
                 if (pizzaPrice < 0) {
                     badPizzaPrice = true;
-                }
-                else {
+                } else {
                     badPizzaPrice = orderRestaurant.getMenu().stream()
                             .noneMatch(menuPizza -> menuPizza.getPriceInPence() == pizzaPrice);
                 }

@@ -2,8 +2,8 @@ package com.example.ilp_cw1.DTO;
 
 public class NextPosition {
 
-    private LngLat start;
-    private double angle;
+    LngLat start;
+    double angle;
 
     public NextPosition(LngLat start, double angle) {
         this.start = start;
@@ -12,16 +12,8 @@ public class NextPosition {
 
     public LngLat getStart() { return start; }
 
-    public void setStart(LngLat start) {
-        this.start = start;
-    }
-
     public double getAngle() {
         return angle;
-    }
-
-    public void setAngle(double angle) {
-        this.angle = angle;
     }
 }
 
