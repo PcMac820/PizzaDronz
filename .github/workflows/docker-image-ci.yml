@@ -1,0 +1,44 @@
+name: CI/CD for Docker Image
+
+# Trigger the workflow on push to the main branch (or any branch you want to monitor)
+on:
+  push:
+    branches:
+      - main  # You can replace this with any branch name or use '*' for all branches
+
+# Define the job
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # The runner environment
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Set up Docker Buildx (recommended for building images)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Log in to Docker Hub (or another registry)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Set this in your GitHub secrets
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Set this in your GitHub secrets
+
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ilp_submission_image:latest .
+
+      # Test the Docker image (assuming you have some testing command)
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm ilp_submission_image:latest sh -c "your-test-command-here"
+      
+      # Optionally, push the image to Docker Hub (if required)
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push ilp_submission_image:latest
+        if: github.ref == 'refs/heads/main'  # Push only if the branch is main
