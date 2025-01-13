@@ -35,7 +35,7 @@ jobs:
       # Test the Docker image (assuming you have some testing command)
       - name: Run tests in Docker container
         run: |
-          docker run --rm ilp_submission_image:latest sh -c "your-test-command-here"
+          docker run --rm ilp_submission_image:latest npm test
       
       # Optionally, push the image to Docker Hub (if required)
       - name: Push Docker image to Docker Hub
