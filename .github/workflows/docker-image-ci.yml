@@ -35,4 +35,11 @@ jobs:
       # Test the Docker image (assuming you have some testing command)
       - name: Run tests in Docker container
         run: |
-          docker run --rm ilp_submission_image:latest npm test
+          docker run --rm ilp_submission_image:latest mvn test
+
+      - name: Upload JUnit test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-test-results
+          path: target/test-classes/testng-results.xml  # Path to the test report
+
