@@ -1,4 +1,4 @@
-package com.example.ilp_cw1;
+package com.example.ilp_cw1.Definitions;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.http.HttpStatus;

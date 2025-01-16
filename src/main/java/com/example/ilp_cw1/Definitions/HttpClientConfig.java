@@ -1,4 +1,4 @@
-package com.example.ilp_cw1;
+package com.example.ilp_cw1.Definitions;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
