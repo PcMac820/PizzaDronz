@@ -1,7 +1,7 @@
 package Services;
 
-import com.example.ilp_cw1.DTO.LngLat;
-import com.example.ilp_cw1.DTO.NamedRegion;
+import com.example.ilp_cw1.Definitions.LngLat;
+import com.example.ilp_cw1.Definitions.NamedRegion;
 import com.example.ilp_cw1.Services.NoFlyZoneService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package Services;
 
-import com.example.ilp_cw1.DTO.LngLat;
-import com.example.ilp_cw1.DTO.Pizza;
-import com.example.ilp_cw1.DTO.Restaurant;
+import com.example.ilp_cw1.Definitions.LngLat;
+import com.example.ilp_cw1.Definitions.Pizza;
+import com.example.ilp_cw1.Definitions.Restaurant;
 import com.example.ilp_cw1.Services.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

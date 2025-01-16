@@ -1,6 +1,6 @@
 package com.example.ilp_cw1.Controllers;
 
-import com.example.ilp_cw1.DTO.*;
+import com.example.ilp_cw1.Definitions.*;
 import com.example.ilp_cw1.Services.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +30,9 @@ public class DeliveryPathController {
 
     private final PositioningController positioningController;
 
-    public DeliveryPathController(OrderController orderController, RestaurantService restaurantService, CentralAreaService centralAreaService, NoFlyZoneService noFlyZoneService, PositioningController positioningController) {
+    public DeliveryPathController(OrderController orderController, RestaurantService restaurantService,
+                                  CentralAreaService centralAreaService, NoFlyZoneService noFlyZoneService,
+                                  PositioningController positioningController) {
         this.orderController = orderController;
         this.restaurantService = restaurantService;
         this.centralAreaService = centralAreaService;
@@ -302,11 +304,10 @@ public class DeliveryPathController {
         String geoJsonString;
         try {
             geoJsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(geoJson);
-        } catch (JsonProcessingException e) {
+        }
+        catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
         return geoJsonString;
     }
-
 }

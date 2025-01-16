@@ -1,6 +1,6 @@
 package com.example.ilp_cw1.Services;
 
-import com.example.ilp_cw1.DTO.NamedRegion;
+import com.example.ilp_cw1.Definitions.NamedRegion;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

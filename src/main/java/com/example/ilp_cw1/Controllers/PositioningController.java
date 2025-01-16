@@ -1,6 +1,6 @@
 package com.example.ilp_cw1.Controllers;
 
-import com.example.ilp_cw1.DTO.*;
+import com.example.ilp_cw1.Definitions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package Controllers;
 
 import com.example.ilp_cw1.Controllers.*;
-import com.example.ilp_cw1.DTO.*;
+import com.example.ilp_cw1.Definitions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

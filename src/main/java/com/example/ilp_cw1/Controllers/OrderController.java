@@ -1,6 +1,6 @@
 package com.example.ilp_cw1.Controllers;
 
-import com.example.ilp_cw1.DTO.*;
+import com.example.ilp_cw1.Definitions.*;
 import com.example.ilp_cw1.Services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
