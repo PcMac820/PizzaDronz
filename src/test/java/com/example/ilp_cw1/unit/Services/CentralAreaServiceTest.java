@@ -1,6 +1,7 @@
-package com.example.ilp_cw1.Services;
+package com.example.ilp_cw1.unit.Services;
 
 import com.example.ilp_cw1.Definitions.NamedRegion;
+import com.example.ilp_cw1.Services.CentralAreaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

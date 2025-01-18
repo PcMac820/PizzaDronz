@@ -1,4 +1,4 @@
-package com.example.ilp_cw1.ApiTests;
+package com.example.ilp_cw1.api;
 
 import com.example.ilp_cw1.Definitions.*;
 import com.example.ilp_cw1.Services.RestaurantService;

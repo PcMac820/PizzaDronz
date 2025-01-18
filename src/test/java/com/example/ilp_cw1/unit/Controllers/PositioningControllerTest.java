@@ -1,5 +1,6 @@
-package com.example.ilp_cw1.Controllers;
+package com.example.ilp_cw1.unit.Controllers;
 
+import com.example.ilp_cw1.Controllers.PositioningController;
 import com.example.ilp_cw1.Definitions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

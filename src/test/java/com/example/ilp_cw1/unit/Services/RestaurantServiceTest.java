@@ -1,8 +1,9 @@
-package com.example.ilp_cw1.Services;
+package com.example.ilp_cw1.unit.Services;
 
 import com.example.ilp_cw1.Definitions.LngLat;
 import com.example.ilp_cw1.Definitions.Pizza;
 import com.example.ilp_cw1.Definitions.Restaurant;
+import com.example.ilp_cw1.Services.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
