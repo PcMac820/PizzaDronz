@@ -92,7 +92,7 @@ public class DeliveryPathController {
         }
     }
 
-    private List<LngLat> setupForAStarSearch(Order order) {
+    public List<LngLat> setupForAStarSearch(Order order) {
         Pizza[] orderPizzas = order.getPizzasInOrder();
         String pizzaName = orderPizzas[0].getName();
 
@@ -273,7 +273,7 @@ public class DeliveryPathController {
         return false;
     }
 
-    private String formatPathToGeoJson(List<LngLat> path){
+    public String formatPathToGeoJson(List<LngLat> path){
         ObjectMapper mapper = new ObjectMapper();
 
         ObjectNode geoJson = mapper.createObjectNode();

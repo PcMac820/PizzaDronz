@@ -11,6 +11,9 @@ public class Order {
     Pizza[] pizzasInOrder;
     CreditCardInformation creditCardInformation;
 
+    public Order(){
+    }
+
     public Order(String orderNo, String orderDate, int priceTotalInPence, Pizza[] pizzasInOrder,
                  CreditCardInformation creditCardInformation) {
         this.orderNo = orderNo;
@@ -22,6 +25,10 @@ public class Order {
 
     public String getOrderDate() {
         return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public int getPriceTotalInPence() {
