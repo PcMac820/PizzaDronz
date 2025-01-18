@@ -19,33 +19,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
+      - name: Build Docker image and run tests
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ilp_submission_image:${{ github.sha }} .
+          docker build -t ilp_submission_image:${{ github.sha }} .
 
-      - name: Run tests in Docker container
+      - name: Run Unit Tests in Docker container
         run: |
-          docker run --rm ${{ secrets.DOCKER_USERNAME }}/ilp_submission_image:${{ github.sha }} mvn test
+          docker run --rm ilp_submission_image:${{ github.sha }} mvn test -P unit
 
-      - name: Push Docker image to Docker Hub
+      - name: Run API Tests in Docker container
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/ilp_submission_image:${{ github.sha }}
+          docker run --rm ilp_submission_image:${{ github.sha }} mvn test -P api
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to hosting platform
+      - name: Push Docker image to Docker Hub (optional)
+        if: success()
         run: |
-          echo "Deploy your app to your environment"
-          # Example deploy command could be using `docker-compose` or other tools:
-          # docker-compose up -d
+          docker push panimcdermott/ilp_submission_image:${{ github.sha }}

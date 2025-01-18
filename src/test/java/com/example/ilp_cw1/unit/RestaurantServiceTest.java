@@ -1,4 +1,4 @@
-package com.example.ilp_cw1.unit.Services;
+package com.example.ilp_cw1.unit;
 
 import com.example.ilp_cw1.Definitions.LngLat;
 import com.example.ilp_cw1.Definitions.Pizza;

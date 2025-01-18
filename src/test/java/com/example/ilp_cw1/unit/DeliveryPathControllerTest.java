@@ -1,4 +1,4 @@
-package com.example.ilp_cw1.unit.Controllers;
+package com.example.ilp_cw1.unit;
 
 import com.example.ilp_cw1.Controllers.DeliveryPathController;
 import com.example.ilp_cw1.Controllers.OrderController;
