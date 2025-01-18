@@ -171,7 +171,6 @@ public class OrderController {
             return new ResponseEntity<>(thisOrderValidation, HttpStatus.OK);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

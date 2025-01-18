@@ -33,8 +33,11 @@ public class Pizza {
         return name;
     }
 
+    public void setName(String name) { this.name = name; }
+
     public int getPriceInPence() {
         return priceInPence;
     }
 
+    public void setPriceInPence(int priceInPence) {this.priceInPence = priceInPence;}
 }

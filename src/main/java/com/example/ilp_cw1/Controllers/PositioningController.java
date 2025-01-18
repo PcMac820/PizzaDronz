@@ -67,7 +67,7 @@ public class PositioningController {
             }
         }
         catch(Exception e){
-            return ResponseEntity.badRequest().body("Unexpected Error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

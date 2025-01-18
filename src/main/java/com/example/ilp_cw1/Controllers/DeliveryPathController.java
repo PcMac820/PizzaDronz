@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,7 +71,7 @@ public class DeliveryPathController {
     }
 
     @PostMapping("/calcDeliveryPathAsGeoJson")
-    public ResponseEntity<Object> calcDeliveryPathAsGeoJson(@RequestBody Order order) {
+    public ResponseEntity<String> calcDeliveryPathAsGeoJson(@RequestBody Order order) {
         try {
             //helper method to grab start and end positions
             List<LngLat> startAndGoal = setupForAStarSearch(order);
@@ -84,7 +85,7 @@ public class DeliveryPathController {
             //formats path so that it can be used in GeoJSON
             String geoJsonPath = formatPathToGeoJson(path);
 
-            return ResponseEntity.ok(geoJsonPath);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(geoJsonPath);
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

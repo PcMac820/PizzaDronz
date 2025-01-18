@@ -15,6 +15,11 @@ public class LngLat {
         this.lat = lat;
     }
 
+    @Override
+    public String toString() {
+        return "{ \"lng\": " + this.lng + ", \"lat\": " + this.lat + " }";
+    }
+
     //override for equals based on values rather than object
     @Override
     public boolean equals(Object obj) {

@@ -39,4 +39,10 @@ public class Order {
     public CreditCardInformation getCreditCardInformation() {
         return creditCardInformation;
     }
+
+    public void setPriceTotalInPence(int i) { this.priceTotalInPence = i; }
+
+    public void setCreditCardInformation(CreditCardInformation cardInfo) {
+        this.creditCardInformation = cardInfo;
+    }
 }
