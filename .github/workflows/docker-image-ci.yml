@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -24,33 +26,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image and run tests
-        run: |
-          docker build -t ilp_submission_image:${{ github.sha }} .
-
-      - name: Run Unit Tests in Docker container
-        run: |
-          docker run --rm ilp_submission_image:${{ github.sha }} mvn test -P unit
-
-      - name: Run API Tests in Docker container
-        run: |
-          docker run --rm ilp_submission_image:${{ github.sha }} mvn test -P api
-
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java-version: [11, 17]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # Step 3: Set up Java (JDK) with distribution
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: ${{ matrix.java-version }}
-          distribution: ''
-      - name: Build with Maven
-        run: mvn clean test
+          java-version: '17'  # Specify the Java version
+          distribution: 'temurin'  # Specify the JDK distribution (temurin is a popular choice)
+          java-package: jdk
+          architecture: x64
+
+      # Step 4: Run API Tests
+      - name: Run API Tests
+        run: mvn test -P api
+
+      # Step 5: Run Unit Tests
+      - name: Run Unit Tests
+        run: mvn test -P unit
+
+      # Step 6: Build Docker image and run tests
+      - name: Build Docker image and run tests
+        run: |
+          docker build -t your-image-name:${{ github.sha }} .
+          docker run --rm your-image-name:${{ github.sha }} mvn test
