@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.ilp_cw1.api.ApiTest
+-------------------------------------------------------------------------------
+Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.90 s -- in com.example.ilp_cw1.api.ApiTest

@@ -1,0 +1,12 @@
+com\example\ilp_cw1\unit\RestaurantServiceTest.class
+com\example\ilp_cw1\unit\CentralAreaServiceTest.class
+com\example\ilp_cw1\unit\DeliveryPathControllerTest.class
+com\example\ilp_cw1\modelBased\PositioningControllerModelBasedTests.class
+com\example\ilp_cw1\unit\OrderControllerTest.class
+com\example\ilp_cw1\structural\PositioningControllerStructuralTests.class
+com\example\ilp_cw1\structural\DeliveryPathControllerStructuralTests.class
+com\example\ilp_cw1\modelBased\DeliveryPathControllerModelBasedTest.class
+com\example\ilp_cw1\unit\NoFlyZoneServiceTest.class
+com\example\ilp_cw1\api\ApiTest.class
+com\example\ilp_cw1\combinatorial\CombinatorialTests.class
+com\example\ilp_cw1\unit\PositioningControllerTest.class
