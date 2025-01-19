@@ -12,11 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -440,6 +442,23 @@ public class ApiTest {
     }
 
     @Test
+    public void testValidateOrderPerformance() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        Pizza pizza = new Pizza("R1: Margarita", 1000);
+        Order order = new Order("1", "2025-12-12", 1100,
+                new Pizza[]{pizza},
+                new CreditCardInformation("1234567812345678", "12/25", "333"));
+
+        assertTimeout(Duration.ofMillis(300), () -> {
+            mockMvc.perform(post("/validateOrder")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(order)))
+                    .andExpect(status().isOk());
+        });
+    }
+
+    @Test
     public void testCalcDeliveryPath_InvalidOrder_ShouldReturnBadRequest() throws Exception {
         Order order = new Order("1", "2025-12-12", 100,
                 new Pizza[]{},
@@ -472,5 +491,39 @@ public class ApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("\"Invalid Input\""))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCalcDeliveryPathPerformance() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        Pizza pizza = new Pizza("R1: Margarita", 1000);
+        Order order = new Order("1", "2025-12-12", 1100,
+                new Pizza[]{pizza},
+                new CreditCardInformation("1234567812345678", "12/25", "333"));
+
+        assertTimeout(Duration.ofSeconds(5), () -> {
+            mockMvc.perform(post("/calcDeliveryPath")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(order)))
+                    .andExpect(status().isOk());
+        });
+    }
+
+    @Test
+    public void testCalcDeliveryPathAsGeoJsonPerformance() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        Pizza pizza = new Pizza("R1: Margarita", 1000);
+        Order order = new Order("1", "2025-12-12", 1100,
+                new Pizza[]{pizza},
+                new CreditCardInformation("1234567812345678", "12/25", "333"));
+
+        assertTimeout(Duration.ofSeconds(5), () -> {
+            mockMvc.perform(post("/calcDeliveryPathAsGeoJson")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(order)))
+                    .andExpect(status().isOk());
+        });
     }
 }
