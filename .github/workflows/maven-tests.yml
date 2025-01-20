@@ -62,7 +62,7 @@ jobs:
 
       # Step 9: Run tests in Docker container
       - name: Run tests in Docker container
-        run: docker exec app-container mvn test || docker logs app-container
+        run: docker exec app-container sh -c "cd /app && mvn test" || docker logs app-container
 
       # Step 10: Gracefully shut down Spring Boot application
       - name: Gracefully shut down Spring Boot application
