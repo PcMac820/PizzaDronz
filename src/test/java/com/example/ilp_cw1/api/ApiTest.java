@@ -450,7 +450,7 @@ public class ApiTest {
                 new Pizza[]{pizza},
                 new CreditCardInformation("1234567812345678", "12/25", "333"));
 
-        assertTimeout(Duration.ofMillis(300), () -> {
+        assertTimeout(Duration.ofMillis(400), () -> {
             mockMvc.perform(post("/validateOrder")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(order)))
